@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOPKY Admin - Modern Dashboard UI</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- ApexCharts CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/apexcharts@3.41.0/dist/apexcharts.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-theme="dark">
+
+    <!-- Skeleton Screen Loader -->
+    <div id="skeleton-loader"
+        class="position-fixed top-0 start-0 w-100 h-100 bg-dark d-flex flex-column align-items-center justify-content-center"
+        style="z-index: 9999; transition: opacity 0.5s ease;">
+        <div class="container text-center" style="max-width: 600px;">
+            <div class="d-flex justify-content-center mb-4">
+                <div class="skeleton skeleton-avatar" style="width: 80px; height: 80px;"></div>
+            </div>
+            <div class="skeleton skeleton-title mx-auto"></div>
+            <div class="skeleton skeleton-text mx-auto" style="width: 80%;"></div>
+            <div class="skeleton skeleton-text mx-auto" style="width: 90%;"></div>
+            <div class="skeleton skeleton-text mx-auto" style="width: 70%;"></div>
+            <div class="spinner-border text-primary mt-4" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+        <!-- Brand -->
+        <div class="sidebar-brand">
+            <div class="brand-logo-icon">
+                <i class="bi bi-cpu"></i>
+            </div>
+            <span class="brand-text">SHOPKY ADMIN</span>
+        </div>
+
+        <!-- User Profile Card -->
+        <div class="sidebar-user d-flex align-items-center">
+            <img id="sidebar-avatar-img"
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256&h=256"
+                alt="Dhanush Avatar" class="sidebar-avatar me-3">
+            <div>
+                <h6 id="sidebar-user-name" class="mb-0 fw-bold">Dhanush</h6>
+                <small class="text-muted-custom">Super Admin</small>
+            </div>
+        </div>
+
+        <!-- Menu Navigation -->
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a href="#dashboard" class="sidebar-menu-link active" data-section="dashboard">
+                    <i class="bi bi-grid-fill"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#analytics" class="sidebar-menu-link" data-section="analytics">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#users" class="sidebar-menu-link" data-section="users">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#ecommerce" class="sidebar-menu-link" data-section="ecommerce">
+                    <i class="bi bi-cart-fill"></i>
+                    <span>E-commerce</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#inventory" class="sidebar-menu-link" data-section="inventory">
+                    <i class="bi bi-box-seam-fill"></i>
+                    <span>Inventory</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#transactions" class="sidebar-menu-link" data-section="transactions">
+                    <i class="bi bi-wallet2"></i>
+                    <span>Transactions</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#messages" class="sidebar-menu-link" data-section="messages">
+                    <i class="bi bi-chat-left-text-fill"></i>
+                    <span>Messages</span>
+                    <span class="badge rounded-pill bg-danger ms-auto" id="sidebar-msg-badge">3</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#calendar" class="sidebar-menu-link" data-section="calendar">
+                    <i class="bi bi-calendar-event-fill"></i>
+                    <span>Calendar</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#reports" class="sidebar-menu-link" data-section="reports">
+                    <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                    <span>Reports</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="#settings" class="sidebar-menu-link" data-section="settings">
+                    <i class="bi bi-gear-fill"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <div class="d-flex align-items-center">
+                <!-- Hamburger Menu -->
+                <button id="sidebar-toggle" class="navbar-action-btn me-3" aria-label="Toggle Sidebar">
+                    <i class="bi bi-list"></i>
+                </button>
+                <!-- Page Title -->
+                <h4 id="navbar-page-title" class="mb-0 fw-bold">Dashboard</h4>
+            </div>
+
+            <!-- Navbar Quick Utilities -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- Quick Theme Toggle -->
+                <button id="theme-toggle-btn" class="navbar-action-btn" title="Toggle Theme" aria-label="Toggle Theme">
+                    <i id="theme-toggle-icon" class="bi bi-sun"></i>
+                </button>
+
+                <!-- Messages Dropdown -->
+                <div class="dropdown">
+                    <button class="navbar-action-btn position-relative" data-bs-toggle="dropdown" aria-expanded="false"
+                        aria-label="View Messages">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end bg-card py-2 text-main border-color"
+                        style="width: 280px; box-shadow: var(--shadow-lg);">
+                        <li
+                            class="px-3 py-2 border-bottom border-color d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Direct Messages</span>
+                            <a href="#messages" class="text-primary text-decoration-none small"
+                                onclick="navigateToSection('messages')">View All</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item px-3 py-2 border-bottom border-color d-flex align-items-center gap-2"
+                                href="#messages" onclick="navigateToSection('messages'); selectChatUser(0)">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100"
+                                    class="rounded-circle" style="width: 35px; height: 35px;" alt="Avatar">
+                                <div>
+                                    <div class="fw-semibold text-main small mb-0">Vikram Singh</div>
+                                    <div class="text-muted-custom small text-truncate" style="max-width: 180px;">Let's
+                                        sync up on the sales report...</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item px-3 py-2 border-bottom border-color d-flex align-items-center gap-2"
+                                href="#messages" onclick="navigateToSection('messages'); selectChatUser(1)">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100&h=100"
+                                    class="rounded-circle" style="width: 35px; height: 35px;" alt="Avatar">
+                                <div>
+                                    <div class="fw-semibold text-main small mb-0">Ananya Sen</div>
+                                    <div class="text-muted-custom small text-truncate" style="max-width: 180px;">Is the
+                                        design system updated?</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Notifications Dropdown -->
+                <div class="dropdown">
+                    <button class="navbar-action-btn position-relative" data-bs-toggle="dropdown" aria-expanded="false"
+                        aria-label="View Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end bg-card py-2 text-main border-color"
+                        style="width: 300px; box-shadow: var(--shadow-lg);">
+                        <li
+                            class="px-3 py-2 border-bottom border-color d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Notifications</span>
+                            <span class="badge bg-primary rounded-pill">3 New</span>
+                        </li>
+                        <li>
+                            <a class="dropdown-item px-3 py-2 border-bottom border-color d-flex gap-2" href="#">
+                                <div class="stat-icon primary flex-shrink-0"
+                                    style="width: 32px; height: 32px; font-size: 1rem;"><i
+                                        class="bi bi-credit-card"></i></div>
+                                <div>
+                                    <div class="fw-semibold text-main small mb-0">Payment successful</div>
+                                    <div class="text-muted-custom small">Transaction #TX98372 completed</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item px-3 py-2 border-bottom border-color d-flex gap-2" href="#">
+                                <div class="stat-icon warning flex-shrink-0"
+                                    style="width: 32px; height: 32px; font-size: 1rem;"><i
+                                        class="bi bi-exclamation-triangle"></i></div>
+                                <div>
+                                    <div class="fw-semibold text-main small mb-0">Low Stock Alert</div>
+                                    <div class="text-muted-custom small">5 inventory items are running low</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- User Profile Action Menu -->
+                <div class="dropdown">
+                    <button class="d-flex align-items-center gap-2 border-0 bg-transparent" data-bs-toggle="dropdown"
+                        aria-expanded="false" aria-label="User Menu" style="outline: none;">
+                        <img id="navbar-avatar-img"
+                            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256&h=256"
+                            alt="Avatar" class="rounded-circle"
+                            style="width: 38px; height: 38px; object-fit: cover; border: 2px solid var(--accent-blue);">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end bg-card py-2 border-color text-main"
+                        style="box-shadow: var(--shadow-lg);">
+                        <li class="px-3 py-2 border-bottom border-color">
+                            <div class="fw-bold" id="navbar-user-name">Dhanush</div>
+                            <small class="text-muted-custom">dhanush@nexus.com</small>
+                        </li>
+                        <li>
+                            <a class="dropdown-item px-3 py-2 d-flex align-items-center gap-2 text-main"
+                                href="#settings" onclick="navigateToSection('settings')">
+                                <i class="bi bi-person"></i> My Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item px-3 py-2 d-flex align-items-center gap-2 text-main"
+                                href="#settings" onclick="navigateToSection('settings')">
+                                <i class="bi bi-gear"></i> Settings
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dynamic Dashboard Sections -->
+        <main class="main-content">
+
+            <!-- 1. DASHBOARD SECTION -->
+            <section id="dashboard" class="content-section">
+                <!-- Statistics Card Summary Row -->
+                <div class="row g-4 mb-4">
+                    <!-- Total Revenue Card -->
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="custom-card p-4 h-100 d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted-custom text-uppercase small fw-bold">Total Revenue</span>
+                                <h3 class="mb-0 fw-bold mt-1 text-main">₹48,259.00</h3>
+                                <span class="text-success small fw-semibold"><i class="bi bi-arrow-up-short"></i>
+                                    +12.4%</span>
+                            </div>
+                            <div class="stat-icon primary">
+                                <i class="bi bi-currency-rupee"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sales Overview Card -->
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="custom-card p-4 h-100 d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted-custom text-uppercase small fw-bold">Total Sales</span>
+                                <h3 class="mb-0 fw-bold mt-1 text-main">2,854</h3>
+                                <span class="text-success small fw-semibold"><i class="bi bi-arrow-up-short"></i>
+                                    +8.2%</span>
+                            </div>
+                            <div class="stat-icon success">
+                                <i class="bi bi-bag-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Users Card -->
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="custom-card p-4 h-100 d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted-custom text-uppercase small fw-bold">Active Users</span>
+                                <h3 class="mb-0 fw-bold mt-1 text-main">12,492</h3>
+                                <span class="text-danger small fw-semibold"><i class="bi bi-arrow-down-short"></i>
+                                    -1.5%</span>
+                            </div>
+                            <div class="stat-icon info">
+                                <i class="bi bi-people"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Products Card -->
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="custom-card p-4 h-100 d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted-custom text-uppercase small fw-bold">Total Products</span>
+                                <h3 class="mb-0 fw-bold mt-1 text-main">842</h3>
+                                <span class="text-success small fw-semibold"><i class="bi bi-arrow-up-short"></i>
+                                    +4.7%</span>
+                            </div>
+                            <div class="stat-icon warning">
+                                <i class="bi bi-box"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Charts Grid -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12 col-xl-8">
+                        <div class="custom-card p-4 h-100">
+                            <h5 class="fw-bold mb-4 text-main">Revenue Chart (Sales Overview)</h5>
+                            <div id="revenue-chart" style="min-height: 350px;"></div>
+                        </div>
+                    </div>
+                    <!-- Recent Activity Panel -->
+                    <div class="col-12 col-xl-4">
+                        <div class="custom-card p-4 h-100">
+                            <h5 class="fw-bold mb-4 text-main">Latest Activity</h5>
+                            <div class="timeline d-flex flex-column gap-4">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="stat-icon success flex-shrink-0"
+                                        style="width: 36px; height: 36px; font-size: 1rem;"><i
+                                            class="bi bi-person-plus"></i></div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-main">New user registered</h6>
+                                        <p class="mb-0 text-muted-custom small">Aarav Mehta signed up as customer.</p>
+                                        <span class="text-muted-custom small text-uppercase"
+                                            style="font-size: 0.7rem;">5 min ago</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="stat-icon primary flex-shrink-0"
+                                        style="width: 36px; height: 36px; font-size: 1rem;"><i class="bi bi-cart"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-main">Order #ORD-7392 placed</h6>
+                                        <p class="mb-0 text-muted-custom small">Item: Smart Watch Pro. Amount:
+                                            ₹14,999.00.</p>
+                                        <span class="text-muted-custom small text-uppercase"
+                                            style="font-size: 0.7rem;">25 min ago</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="stat-icon warning flex-shrink-0"
+                                        style="width: 36px; height: 36px; font-size: 1rem;"><i
+                                            class="bi bi-shield-lock"></i></div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-main">System Config Updated</h6>
+                                        <p class="mb-0 text-muted-custom small">Database backup complete by Admin
+                                            Dhanush.</p>
+                                        <span class="text-muted-custom small text-uppercase"
+                                            style="font-size: 0.7rem;">1 hour ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders Table Panel -->
+                <div class="custom-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0 text-main">Recent Orders</h5>
+                        <a href="#ecommerce" class="btn btn-outline-primary btn-sm rounded-pill"
+                            onclick="navigateToSection('ecommerce')">View E-commerce</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-custom align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Total Amount</th>
+                                    <th>Payment Status</th>
+                                    <th>Product</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="fw-bold">#ORD-9024</span></td>
+                                    <td>Ankit Sharma</td>
+                                    <td>Jun 26, 2026</td>
+                                    <td>₹1,499.00</td>
+                                    <td><span class="badge-custom active">Completed</span></td>
+                                    <td>Wireless Headset</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fw-bold">#ORD-9023</span></td>
+                                    <td>Rohan Verma</td>
+                                    <td>Jun 25, 2026</td>
+                                    <td>₹24,999.00</td>
+                                    <td><span class="badge-custom pending">Pending</span></td>
+                                    <td>Mechanical Keyboard</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="fw-bold">#ORD-9022</span></td>
+                                    <td>Meera Joshi</td>
+                                    <td>Jun 25, 2026</td>
+                                    <td>₹8,990.00</td>
+                                    <td><span class="badge-custom active">Completed</span></td>
+                                    <td>Leather Backpack</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 2. ANALYTICS SECTION -->
+            <section id="analytics" class="content-section d-none">
+                <!-- Analytics Summary cards -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12 col-md-4">
+                        <div class="custom-card p-4 text-center">
+                            <span class="text-muted-custom text-uppercase small fw-bold">Website Visitors</span>
+                            <h2 class="mb-0 fw-bold mt-1 text-main">184.2K</h2>
+                            <span class="text-success small fw-semibold"><i class="bi bi-arrow-up-short"></i>
+                                +18.4%</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="custom-card p-4 text-center">
+                            <span class="text-muted-custom text-uppercase small fw-bold">Customer Growth</span>
+                            <h2 class="mb-0 fw-bold mt-1 text-main">+4,821</h2>
+                            <span class="text-success small fw-semibold"><i class="bi bi-arrow-up-short"></i>
+                                +11.2%</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="custom-card p-4 text-center">
+                            <span class="text-muted-custom text-uppercase small fw-bold">Conversion Rate</span>
+                            <h2 class="mb-0 fw-bold mt-1 text-main">3.24%</h2>
+                            <span class="text-danger small fw-semibold"><i class="bi bi-arrow-down-short"></i>
+                                -0.8%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts layout -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12 col-xl-7">
+                        <div class="custom-card p-4">
+                            <h5 class="fw-bold mb-4 text-main">Monthly Sales Performance</h5>
+                            <div id="monthly-sales-chart" style="min-height: 350px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-5">
+                        <div class="custom-card p-4">
+                            <h5 class="fw-bold mb-4 text-main">Visitor Device Usage</h5>
+                            <div id="device-usage-chart" style="min-height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Products & Customer Flow metrics -->
+                <div class="row g-4">
+                    <!-- Top Products Table -->
+                    <div class="col-12 col-xl-6">
+                        <div class="custom-card p-4 h-100">
+                            <h5 class="fw-bold mb-4 text-main">Top Performing Products</h5>
+                            <div class="table-responsive">
+                                <table class="table table-custom align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Sales</th>
+                                            <th>Revenue</th>
+                                            <th>Rating</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Nexus Smart Watch</td>
+                                            <td>412</td>
+                                            <td>₹4,12,000</td>
+                                            <td><span class="text-warning"><i class="bi bi-star-fill"></i> 4.8</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Aero Headphones</td>
+                                            <td>320</td>
+                                            <td>₹2,88,000</td>
+                                            <td><span class="text-warning"><i class="bi bi-star-fill"></i> 4.6</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pro Gaming Keyboard</td>
+                                            <td>280</td>
+                                            <td>₹3,36,000</td>
+                                            <td><span class="text-warning"><i class="bi bi-star-fill"></i> 4.5</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Customer Demographics Chart -->
+                    <div class="col-12 col-xl-6">
+                        <div class="custom-card p-4 h-100">
+                            <h5 class="fw-bold mb-4 text-main">Visitor Demographics</h5>
+                            <div id="demographics-chart" style="min-height: 250px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 3. USERS SECTION -->
+            <section id="users" class="content-section d-none">
+                <!-- Toolbar Row -->
+                <div class="custom-card p-4 mb-4">
+                    <div class="row g-3 align-items-center justify-content-between">
+                        <div class="col-12 col-md-5 col-xl-4">
+                            <div class="position-relative">
+                                <i
+                                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted-custom"></i>
+                                <input type="text" id="user-search-input" class="form-control form-control-custom ps-5"
+                                    placeholder="Search users by name, email or role...">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-auto d-flex gap-2">
+                            <!-- Add User Trigger button -->
+                            <button class="btn btn-primary rounded-pill d-flex align-items-center gap-2"
+                                data-bs-toggle="modal" data-bs-target="#addUserModal">
+                                <i class="bi bi-person-plus"></i> Add User
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management Table -->
+                <div class="custom-card p-4">
+                    <div class="table-responsive">
+                        <table class="table table-custom align-middle">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Joined Date</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-table-body">
+                                <!-- Generated Dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Table Pagination -->
+                    <nav class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="text-muted-custom small" id="user-pagination-info">
+                            Showing 1 to 5 of 10 users
+                        </div>
+                        <ul class="pagination pagination-sm mb-0" id="user-pagination-links">
+                            <!-- Populated Dynamically -->
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+
+
+            <!-- 4. E-COMMERCE SECTION -->
+            <section id="ecommerce" class="content-section d-none">
+                <!-- Stats Summaries -->
+                <div class="row g-4 mb-4">
+                    <div class="col-6 col-lg-3">
+                        <div class="custom-card p-3 text-center">
+                            <span class="text-muted-custom small fw-semibold">Products Sold</span>
+                            <h4 class="mb-0 fw-bold mt-1 text-main">1,482</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="custom-card p-3 text-center">
+                            <span class="text-muted-custom small fw-semibold">Direct Store Orders</span>
+                            <h4 class="mb-0 fw-bold mt-1 text-main">982</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="custom-card p-3 text-center">
+                            <span class="text-muted-custom small fw-semibold">Best-selling Category</span>
+                            <h4 class="mb-0 fw-bold mt-1 text-main text-truncate">Accessories</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="custom-card p-3 text-center">
+                            <span class="text-muted-custom small fw-semibold">Average Order Value</span>
+                            <h4 class="mb-0 fw-bold mt-1 text-main">₹4,250</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products filter and catalogs -->
+                <div class="custom-card p-4 mb-4">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                        <h5 class="fw-bold mb-0 text-main">E-commerce Products Grid</h5>
+                        <!-- Filter chips -->
+                        <div class="d-flex flex-wrap gap-2" id="ecommerce-filter-container">
+                            <button class="btn btn-sm btn-outline-primary rounded-pill active-filter"
+                                data-filter="all">All Items</button>
+                            <button class="btn btn-sm btn-outline-primary rounded-pill"
+                                data-filter="electronics">Electronics</button>
+                            <button class="btn btn-sm btn-outline-primary rounded-pill"
+                                data-filter="clothing">Clothing</button>
+                            <button class="btn btn-sm btn-outline-primary rounded-pill"
+                                data-filter="furniture">Furniture</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Catalog Grid -->
+                <div class="products-grid" id="ecommerce-products-container">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </section>
+
+
+            <!-- 5. INVENTORY SECTION -->
+            <section id="inventory" class="content-section d-none">
+                <!-- Stock management summary metrics -->
+                <div class="custom-card p-4 mb-4">
+                    <div class="row g-4 align-items-center justify-content-between">
+                        <div class="col-12 col-md-8 d-flex flex-wrap gap-3">
+                            <div class="badge bg-danger rounded-pill px-3 py-2 d-flex align-items-center gap-2"
+                                id="inventory-low-stock-alert">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                <span>Low Stock Items Alert: 2 products running low</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-auto">
+                            <!-- Add Product modal trigger -->
+                            <button class="btn btn-primary rounded-pill d-flex align-items-center gap-2"
+                                data-bs-toggle="modal" data-bs-target="#addProductModal">
+                                <i class="bi bi-plus-lg"></i> Add Inventory Product
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory database Table -->
+                <div class="custom-card p-4">
+                    <div class="table-responsive">
+                        <table class="table table-custom align-middle">
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Product Name</th>
+                                    <th>Supplier</th>
+                                    <th>Quantity</th>
+                                    <th>Status Level</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-table-body">
+                                <!-- Generated dynamically via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 6. TRANSACTIONS SECTION -->
+            <section id="transactions" class="content-section d-none">
+                <!-- Payment filters toolbar -->
+                <div class="custom-card p-4 mb-4">
+                    <div class="row g-3 align-items-center justify-content-between">
+                        <div class="col-12 col-md-4">
+                            <div class="position-relative">
+                                <i
+                                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted-custom"></i>
+                                <input type="text" id="transaction-search-input"
+                                    class="form-control form-control-custom ps-5"
+                                    placeholder="Search payments by Customer or ID...">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-5 d-flex gap-2 align-items-center">
+                            <select id="transaction-status-filter" class="form-select form-select-custom w-auto">
+                                <option value="all">All Statuses</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                            <!-- Export to CSV button -->
+                            <button id="export-csv-btn"
+                                class="btn btn-outline-primary rounded-pill d-flex align-items-center gap-2">
+                                <i class="bi bi-filetype-csv"></i> Export to CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions records layout -->
+                <div class="custom-card p-4">
+                    <div class="table-responsive">
+                        <table class="table table-custom align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Payment Date</th>
+                                    <th>Payment Method</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactions-table-body">
+                                <!-- Built dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 7. MESSAGES SECTION -->
+            <section id="messages" class="content-section d-none">
+                <div class="row g-0 chat-container">
+                    <!-- Conversations side listing panel -->
+                    <div class="col-12 col-md-4 chat-sidebar">
+                        <div class="p-3 border-bottom border-color bg-secondary d-flex flex-column gap-3">
+                            <h5 class="fw-bold mb-0 text-main">Inbox Messages</h5>
+                            <div class="position-relative">
+                                <i
+                                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted-custom"></i>
+                                <input type="text" id="chat-search-input" class="form-control form-control-custom ps-5"
+                                    placeholder="Search chats...">
+                            </div>
+                        </div>
+                        <!-- Conversations items list -->
+                        <div class="chat-list" id="chat-users-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Selected Chat dialog window -->
+                    <div class="col-12 col-md-8 chat-window">
+                        <!-- Chat header -->
+                        <div class="chat-header d-flex align-items-center gap-3">
+                            <img id="chat-header-avatar"
+                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100"
+                                class="rounded-circle" style="width: 40px; height: 40px;" alt="Receiver Avatar">
+                            <div>
+                                <h6 id="chat-header-name" class="fw-bold mb-0 text-main">Vikram Singh</h6>
+                                <small class="text-success d-flex align-items-center gap-1"><span
+                                        class="bg-success rounded-circle" style="width: 8px; height: 8px;"></span>
+                                    Online</small>
+                            </div>
+                        </div>
+
+                        <!-- Chat messages history -->
+                        <div class="chat-body d-flex flex-column" id="chat-conversation-body">
+                            <!-- Chat text bubbles filled dynamically by JS -->
+                        </div>
+
+                        <!-- Message submission sender footer -->
+                        <div class="chat-footer">
+                            <form id="chat-message-form" class="d-flex gap-2">
+                                <input type="text" id="chat-message-input" class="form-control form-control-custom"
+                                    placeholder="Type a message to reply...">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4"
+                                    aria-label="Send Message"><i class="bi bi-send-fill"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 8. CALENDAR SECTION -->
+            <section id="calendar" class="content-section d-none">
+                <div class="row g-4">
+                    <!-- Dynamic Month Visual grid -->
+                    <div class="col-12 col-xl-8">
+                        <div class="custom-card p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="d-flex align-items-center gap-2">
+                                    <button id="calendar-prev-month-btn" class="navbar-action-btn btn-sm"><i
+                                            class="bi bi-chevron-left"></i></button>
+                                    <h5 class="fw-bold mb-0 text-main" id="calendar-month-year-label">June 2026</h5>
+                                    <button id="calendar-next-month-btn" class="navbar-action-btn btn-sm"><i
+                                            class="bi bi-chevron-right"></i></button>
+                                </div>
+                                <button class="btn btn-primary btn-sm rounded-pill d-flex align-items-center gap-2"
+                                    data-bs-toggle="modal" data-bs-target="#addEventModal">
+                                    <i class="bi bi-plus-lg"></i> Add Event
+                                </button>
+                            </div>
+
+                            <!-- Calendar Grid Component -->
+                            <div class="calendar-grid" id="calendar-days-grid">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar event logger side widgets -->
+                    <div class="col-12 col-xl-4">
+                        <div class="custom-card p-4 h-100">
+                            <h5 class="fw-bold mb-4 text-main">Schedule Log</h5>
+                            <div id="calendar-schedule-list" class="d-flex flex-column gap-3">
+                                <!-- Generated Dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 9. REPORTS SECTION -->
+            <section id="reports" class="content-section d-none">
+                <!-- Summary Metrics Row -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12 col-md-4">
+                        <div class="custom-card p-4 text-center">
+                            <h6 class="text-muted-custom text-uppercase small fw-bold">Q2 Revenue Growth</h6>
+                            <h3 class="fw-bold mt-2 text-success">+14.28%</h3>
+                            <p class="text-muted-custom small mb-0">Target expected: +10.0%</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="custom-card p-4 text-center">
+                            <h6 class="text-muted-custom text-uppercase small fw-bold">Store Refunds Log</h6>
+                            <h3 class="fw-bold mt-2 text-danger">0.34%</h3>
+                            <p class="text-muted-custom small mb-0">Under security limit (1.0%)</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="custom-card p-4 text-center">
+                            <h6 class="text-muted-custom text-uppercase small fw-bold">Export Logs Size</h6>
+                            <h3 class="fw-bold mt-2 text-main">124 MB</h3>
+                            <p class="text-muted-custom small mb-0">Auto clean scheduled in 5 days</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Available downloads listing card -->
+                <div class="custom-card p-4">
+                    <h5 class="fw-bold mb-4 text-main">System Analytics Reports</h5>
+                    <div class="d-flex flex-column gap-3">
+
+                        <!-- Sales Report -->
+                        <div
+                            class="p-3 bg-secondary rounded-3 border border-color d-flex flex-wrap align-items-center justify-content-between gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon primary" style="width: 40px; height: 40px; font-size: 1.1rem;"><i
+                                        class="bi bi-file-earmark-bar-graph"></i></div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-main">Annual Corporate Sales Report</h6>
+                                    <small class="text-muted-custom">Contains total itemized metrics of inventory and
+                                        sales from Q1/Q2</small>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                    onclick="triggerReportDownload('Sales_Report_2026', 'PDF')"><i
+                                        class="bi bi-file-earmark-pdf"></i> Download PDF</button>
+                                <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                    onclick="triggerReportDownload('Sales_Report_2026', 'Excel')"><i
+                                        class="bi bi-file-earmark-excel"></i> Download Excel</button>
+                            </div>
+                        </div>
+
+                        <!-- Revenue Report -->
+                        <div
+                            class="p-3 bg-secondary rounded-3 border border-color d-flex flex-wrap align-items-center justify-content-between gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon success" style="width: 40px; height: 40px; font-size: 1.1rem;"><i
+                                        class="bi bi-cash-stack"></i></div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-main">Revenue, Payments & Taxation Log</h6>
+                                    <small class="text-muted-custom">Detail sheet listing payments processors, failures,
+                                        and fees</small>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                    onclick="triggerReportDownload('Revenue_Taxation_Log', 'PDF')"><i
+                                        class="bi bi-file-earmark-pdf"></i> Download PDF</button>
+                                <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                    onclick="triggerReportDownload('Revenue_Taxation_Log', 'Excel')"><i
+                                        class="bi bi-file-earmark-excel"></i> Download Excel</button>
+                            </div>
+                        </div>
+
+                        <!-- Customer Demographics Report -->
+                        <div
+                            class="p-3 bg-secondary rounded-3 border border-color d-flex flex-wrap align-items-center justify-content-between gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon info" style="width: 40px; height: 40px; font-size: 1.1rem;"><i
+                                        class="bi bi-people-fill"></i></div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-main">Customer Engagements & Devices Survey</h6>
+                                    <small class="text-muted-custom">Analytics details, country of logins, device
+                                        ratios, and growth logs</small>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                    onclick="triggerReportDownload('Customer_Survey_Data', 'PDF')"><i
+                                        class="bi bi-file-earmark-pdf"></i> Download PDF</button>
+                                <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                    onclick="triggerReportDownload('Customer_Survey_Data', 'Excel')"><i
+                                        class="bi bi-file-earmark-excel"></i> Download Excel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 10. SETTINGS SECTION -->
+            <section id="settings" class="content-section d-none">
+                <div class="row g-4">
+                    <!-- Profile card customization -->
+                    <div class="col-12 col-xl-7">
+                        <div class="custom-card p-4 mb-4">
+                            <h5 class="fw-bold mb-4 text-main">Profile Settings</h5>
+                            <form id="profile-settings-form">
+                                <div class="row g-3">
+                                    <div class="col-12 d-flex align-items-center gap-3 mb-3">
+                                        <img id="settings-avatar-preview"
+                                            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256&h=256"
+                                            alt="Avatar" class="rounded-circle"
+                                            style="width: 70px; height: 70px; object-fit: cover; border: 2px solid var(--accent-blue);">
+                                        <div>
+                                            <label for="profile-avatar-select"
+                                                class="btn btn-outline-primary btn-sm rounded-pill px-3">Choose
+                                                Photo</label>
+                                            <input type="file" id="profile-avatar-select" class="d-none"
+                                                accept="image/*">
+                                            <div class="text-muted-custom small mt-1">Accepts JPG, PNG up to 2MB.</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label text-muted-custom small fw-bold">Full Name</label>
+                                        <input type="text" id="profile-fullname-input"
+                                            class="form-control form-control-custom" value="Dhanush">
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label text-muted-custom small fw-bold">Email Address</label>
+                                        <input type="email" id="profile-email-input"
+                                            class="form-control form-control-custom" value="dhanush@nexus.com">
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label text-muted-custom small fw-bold">Designated
+                                            Role</label>
+                                        <input type="text" id="profile-role-input"
+                                            class="form-control form-control-custom" value="Super Admin" disabled>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label text-muted-custom small fw-bold">Language
+                                            Selection</label>
+                                        <select id="profile-language-select" class="form-select form-select-custom">
+                                            <option value="en" selected>English (US)</option>
+                                            <option value="es">Español</option>
+                                            <option value="de">Deutsch</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary rounded-pill px-4 mt-2">Save
+                                            Profile Updates</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Change Password settings -->
+                        <div class="custom-card p-4">
+                            <h5 class="fw-bold mb-4 text-main">Security Settings</h5>
+                            <form id="password-settings-form">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label text-muted-custom small fw-bold">Current
+                                            Password</label>
+                                        <input type="password" id="current-pwd-input"
+                                            class="form-control form-control-custom" required>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label text-muted-custom small fw-bold">New Password</label>
+                                        <input type="password" id="new-pwd-input"
+                                            class="form-control form-control-custom" required>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label text-muted-custom small fw-bold">Confirm New
+                                            Password</label>
+                                        <input type="password" id="confirm-pwd-input"
+                                            class="form-control form-control-custom" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit"
+                                            class="btn btn-outline-primary rounded-pill px-4 mt-2">Change
+                                            Password</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- UI preferences / System config settings -->
+                    <div class="col-12 col-xl-5">
+                        <div class="custom-card p-4 mb-4">
+                            <h5 class="fw-bold mb-4 text-main">Theme Customizer</h5>
+                            <div
+                                class="d-flex align-items-center justify-content-between p-3 bg-secondary rounded-3 border border-color mb-3">
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-main">Dark Theme Mode</h6>
+                                    <small class="text-muted-custom">Use darker palettes to ease eye strain</small>
+                                </div>
+                                <div class="form-check form-switch fs-4">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="settings-theme-switch" checked>
+                                    <label class="visually-hidden" for="settings-theme-switch">Toggle Dark Theme
+                                        Mode</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System notifications configuration settings -->
+                        <div class="custom-card p-4">
+                            <h5 class="fw-bold mb-4 text-main">Notification Configurations</h5>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="form-check form-check-custom">
+                                    <input class="form-check-input" type="checkbox" id="notify-emails-check" checked>
+                                    <label class="form-check-label text-main" for="notify-emails-check">
+                                        Email Reports & Alerts
+                                        <small class="d-block text-muted-custom mt-0.5" style="font-size: 0.75rem;">Get
+                                            emails on inventory depletion alerts and payment logs</small>
+                                    </label>
+                                </div>
+                                <hr class="my-1 border-color">
+                                <div class="form-check form-check-custom">
+                                    <input class="form-check-input" type="checkbox" id="notify-messages-check" checked>
+                                    <label class="form-check-label text-main" for="notify-messages-check">
+                                        In-App Chat Alerts
+                                        <small class="d-block text-muted-custom mt-0.5" style="font-size: 0.75rem;">Get
+                                            sound/visual highlights on customer message delivery</small>
+                                    </label>
+                                </div>
+                                <hr class="my-1 border-color">
+                                <div class="form-check form-check-custom">
+                                    <input class="form-check-input" type="checkbox" id="notify-system-logs-check">
+                                    <label class="form-check-label text-main" for="notify-system-logs-check">
+                                        Developer Debug Diagnostics
+                                        <small class="d-block text-muted-custom mt-0.5"
+                                            style="font-size: 0.75rem;">Include error debug reports in administrative
+                                            dashboard warnings</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer text-center">
+            <div class="container d-flex flex-wrap justify-content-between align-items-center">
+                <span>© 2026 Nexus Admin Dashboard. Created for final year project.</span>
+                <span>Active Administrator: <strong id="footer-admin-name">Dhanush</strong></span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- BACK-TO-TOP BUTTON -->
+    <button id="back-to-top" class="back-to-top" title="Go to Top" aria-label="Go to Top">
+        <i class="bi bi-chevron-up"></i>
+    </button>
+
+
+    <!-- ==================== MODALS CONFIGURATIONS ==================== -->
+
+    <!-- Add User Bootstrap Modal -->
+    <div class="modal fade modal-custom" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="add-user-modal-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold text-main" id="addUserModalLabel">Create New Account</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Name</label>
+                                <input type="text" id="modal-username" class="form-control form-control-custom" required
+                                    placeholder="User name...">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Email</label>
+                                <input type="email" id="modal-useremail" class="form-control form-control-custom"
+                                    required placeholder="User email...">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-muted-custom small fw-bold">Role</label>
+                                <select id="modal-userrole" class="form-select form-select-custom">
+                                    <option value="User">User</option>
+                                    <option value="Editor">Editor</option>
+                                    <option value="Admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-muted-custom small fw-bold">Account Status</label>
+                                <select id="modal-userstatus" class="form-select form-select-custom">
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Create User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Event Calendar Modal -->
+    <div class="modal fade modal-custom" id="addEventModal" tabindex="-1" aria-labelledby="addEventModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="add-event-modal-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold text-main" id="addEventModalLabel">Add Event Schedule</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Event Title</label>
+                                <input type="text" id="modal-eventtitle" class="form-control form-control-custom"
+                                    required placeholder="Event name/title...">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Date</label>
+                                <input type="date" id="modal-eventdate" class="form-control form-control-custom"
+                                    required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Color Theme</label>
+                                <select id="modal-eventcolor" class="form-select form-select-custom">
+                                    <option value="primary">Accent Blue</option>
+                                    <option value="success">Vibrant Green</option>
+                                    <option value="warning">Orange Warning</option>
+                                    <option value="danger">Red Danger</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Save Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Inventory Modal -->
+    <div class="modal fade modal-custom" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="add-product-modal-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold text-main" id="addProductModalLabel">Add Inventory Product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Product Name</label>
+                                <input type="text" id="modal-prodname" class="form-control form-control-custom" required
+                                    placeholder="Product name...">
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label text-muted-custom small fw-bold">SKU ID</label>
+                                <input type="text" id="modal-prodsku" class="form-control form-control-custom" required
+                                    placeholder="SKU...">
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label text-muted-custom small fw-bold">Quantity In Stock</label>
+                                <input type="number" id="modal-prodqty" class="form-control form-control-custom"
+                                    required min="0" placeholder="0">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Supplier Company</label>
+                                <input type="text" id="modal-prodsupplier" class="form-control form-control-custom"
+                                    required placeholder="Supplier name...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Product Inventory Modal -->
+    <div class="modal fade modal-custom" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="edit-product-modal-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold text-main" id="editProductModalLabel">Edit Product Stock</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-prod-index">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Product Name</label>
+                                <input type="text" id="edit-modal-prodname" class="form-control form-control-custom"
+                                    required>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label text-muted-custom small fw-bold">SKU ID</label>
+                                <input type="text" id="edit-modal-prodsku" class="form-control form-control-custom"
+                                    required>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="form-label text-muted-custom small fw-bold">Quantity In Stock</label>
+                                <input type="number" id="edit-modal-prodqty" class="form-control form-control-custom"
+                                    required min="0">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label text-muted-custom small fw-bold">Supplier Company</label>
+                                <input type="text" id="edit-modal-prodsupplier" class="form-control form-control-custom"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">Update Details</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== CORE SCRIPTS CDNS ==================== -->
+
+    <!-- Bootstrap 5 Bundle JS (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ApexCharts JS -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.41.0/dist/apexcharts.min.js"></script>
+    <!-- Custom Application Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
