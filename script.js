@@ -14,7 +14,7 @@ let appState = {
         role: 'Super Admin'
     },
     users: [
-        { id: 1, name: 'Aarav Mehta', email: 'aarav@nexus.com', role: 'Admin', status: 'Active', joined: 'Jan 12, 2026', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100' },
+        { id: 1, name: 'dhanush', email: 'aarav@nexus.com', role: 'Admin', status: 'Active', joined: 'Jan 12, 2026', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100' },
         { id: 2, name: 'Ananya Sen', email: 'ananya@nexus.com', role: 'Editor', status: 'Active', joined: 'Feb 18, 2026', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100&h=100' },
         { id: 3, name: 'Vikram Singh', email: 'vikram@nexus.com', role: 'User', status: 'Active', joined: 'Mar 05, 2026', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&h=100' },
         { id: 4, name: 'Kabir Dev', email: 'kabir@nexus.com', role: 'User', status: 'Inactive', joined: 'Apr 22, 2026', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100&h=100' },
